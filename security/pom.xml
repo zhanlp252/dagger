@@ -11,5 +11,11 @@
 
     <artifactId>security</artifactId>
 
-
+    <dependencies>
+        <dependency>
+            <groupId>tech.goose</groupId>
+            <artifactId>tool</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+    </dependencies>
 </project>
