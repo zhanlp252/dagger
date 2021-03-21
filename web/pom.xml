@@ -11,5 +11,24 @@
 
     <artifactId>web</artifactId>
 
+    <dependencies>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+            <version>${spring.boot.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>tech.goose</groupId>
+            <artifactId>tool</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>tech.goose</groupId>
+            <artifactId>log</artifactId>
+        </dependency>
+
+
+    </dependencies>
 
 </project>

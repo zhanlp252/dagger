@@ -1,0 +1,11 @@
+${AnsiColor.BRIGHT_CYAN}                                     ${AnsiColor.BLUE}                         _
+${AnsiColor.BRIGHT_CYAN}                                     ${AnsiColor.BLUE}                        | |
+${AnsiColor.BRIGHT_CYAN}   __ _  ___   ___  ___  ___         ${AnsiColor.BLUE}  _ __   __ _ _ __   ___| |
+${AnsiColor.BRIGHT_CYAN}  / _` |/ _ \ / _ \/ __|/ _ \        ${AnsiColor.BLUE} | '_ \ / _` | '_ \ / _ \ |
+${AnsiColor.BRIGHT_CYAN} | (_| | (_) | (_) \__ \  __/        ${AnsiColor.BLUE} | |_) | (_| | | | |  __/ |
+${AnsiColor.BRIGHT_CYAN}  \__, |\___/ \___/|___/\___|        ${AnsiColor.BLUE} | .__/ \__,_|_| |_|\___|_|
+${AnsiColor.BRIGHT_CYAN}  __/ |                              ${AnsiColor.BLUE} | |
+${AnsiColor.BRIGHT_CYAN} |___/                               ${AnsiColor.BLUE} |_|
+
+${AnsiColor.BLUE}:: goose-Panel :: ${spring.application.name}:${AnsiColor.RED}power by Bowen${AnsiColor.BLUE} :: Running SpringBoot ${spring-boot.version} :: ${AnsiColor.BRIGHT_BLACK}
+
