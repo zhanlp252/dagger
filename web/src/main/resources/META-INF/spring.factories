@@ -1,2 +1,2 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-tech.goose.web.config.WebMvcConfig
+io.github.lovelybowen.web.config.WebMvcConfig

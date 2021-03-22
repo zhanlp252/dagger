@@ -1,2 +1,2 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-tech.goose.mybatis.DataSourceAutoConfig
+io.github.lovelybowen.mybatis.DataSourceAutoConfig
