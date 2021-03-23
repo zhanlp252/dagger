@@ -11,5 +11,24 @@
 
     <artifactId>boot-all</artifactId>
 
+    <dependencies>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+            <version>${spring.boot.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>io.github.lovelybowen</groupId>
+            <artifactId>tool</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>io.github.lovelybowen</groupId>
+            <artifactId>log</artifactId>
+        </dependency>
+
+
+    </dependencies>
 
 </project>

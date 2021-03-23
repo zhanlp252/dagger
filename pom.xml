@@ -10,12 +10,13 @@
     <url>https://github.com/lovelybowen/bee-tool</url>
     
     <modules>
-        <module>mybatis</module>
+        <module>database</module>
         <module>tool</module>
         <module>log</module>
         <module>security</module>
         <module>boot-all</module>
-        <module>web</module>
+        <module>cache</module>
+        <module>oss</module>
     </modules>
     <packaging>pom</packaging>
 
@@ -52,6 +53,32 @@
                 <artifactId>log</artifactId>
                 <version>${goose.bee.tool.version}</version>
             </dependency>
+
+            <dependency>
+                <groupId>io.github.lovelybowen</groupId>
+                <artifactId>cache</artifactId>
+                <version>${goose.bee.tool.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>io.github.lovelybowen</groupId>
+                <artifactId>database</artifactId>
+                <version>${goose.bee.tool.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>io.github.lovelybowen</groupId>
+                <artifactId>oss</artifactId>
+                <version>${goose.bee.tool.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>io.github.lovelybowen</groupId>
+                <artifactId>security</artifactId>
+                <version>${goose.bee.tool.version}</version>
+            </dependency>
+
+
         </dependencies>
     </dependencyManagement>
 
