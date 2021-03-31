@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile default="true" name="Default" enabled="true" />
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="cache" />
+        <module name="security" />
+        <module name="database" />
+        <module name="log" />
+        <module name="generator" />
+        <module name="oss" />
+        <module name="tool" />
+        <module name="boot-all" />
+      </profile>
+    </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="boot-all" target="1.8" />
+      <module name="boot-tool" target="1.8" />
+      <module name="cache" target="1.8" />
+      <module name="database" target="1.8" />
+      <module name="generator" target="1.8" />
+      <module name="log" target="1.8" />
+      <module name="oss" target="1.8" />
+      <module name="security" target="1.8" />
+      <module name="tool" target="1.8" />
+    </bytecodeTargetLevel>
+  </component>
+</project>
