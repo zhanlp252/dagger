@@ -1,12 +1,13 @@
-package io.github.lovelybowen.log.constant;
+package constants;
 
 /**
- * @author Bowen huang
- * @date 2020/05/29
+ * @description:日志跟踪常量
+ * @author: verity zhan
+ * @time: 2021/3/30 17:32
  */
 public class TraceConstant {
 
-	/**
+    /**
      * 日志跟踪id名。
      */
     public static final String LOG_TRACE_ID = "traceId";
@@ -20,7 +21,5 @@ public class TraceConstant {
      * 请求头跟踪id名。
      */
     public static final String HTTP_HEADER_TRACE_ID = "appTraceId";
-    
-    
-    
 }
+

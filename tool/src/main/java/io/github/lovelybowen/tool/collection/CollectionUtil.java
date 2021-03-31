@@ -68,7 +68,6 @@ public class CollectionUtil {
      * @param fromList
      * @param function
      * @param <T>      转换元数据
-     * @param <R>      转换后的数据
      * @return
      */
     public static <F, T> List<T> transform(Collection<F> fromList, Function<? super F, ? extends T> function) {
