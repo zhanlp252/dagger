@@ -69,7 +69,7 @@ public class AutoGeneratorUtils {
 
         // 4、策略配置
         StrategyConfig strategy = new StrategyConfig();
-        strategy.setInclude(rb.getString("Include")); // 设置要映射的表名
+        strategy.setInclude(rb.getString("Include01"),rb.getString("Include02")); // 设置要映射的表名
         strategy.setNaming(NamingStrategy.underline_to_camel);  // 内置下划线转驼峰命名
         strategy.setColumnNaming(NamingStrategy.underline_to_camel);
         strategy.setEntityLombokModel(true);  // 自动Lombok
