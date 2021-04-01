@@ -20,7 +20,6 @@ public class NumberUtil {
      *   NumberUtil.toInt("1", 0)  = 1
      * </pre>
      *
-     * @param str          the string to convert, may be null
      * @param defaultValue the default value
      * @return the int represented by the string, or the default if conversion fails
      */
