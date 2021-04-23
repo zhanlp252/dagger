@@ -7,20 +7,20 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="cache" />
-        <module name="security" />
-        <module name="database" />
-        <module name="log" />
-        <module name="generator" />
-        <module name="oss" />
-        <module name="tool" />
         <module name="boot-all" />
+        <module name="cache" />
+        <module name="database" />
+        <module name="generator" />
+        <module name="log" />
+        <module name="oss" />
+        <module name="security" />
+        <module name="tool" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="boot-all" target="1.8" />
-      <module name="boot-tool" target="1.8" />
       <module name="cache" target="1.8" />
+      <module name="dagger" target="1.8" />
       <module name="database" target="1.8" />
       <module name="generator" target="1.8" />
       <module name="log" target="1.8" />

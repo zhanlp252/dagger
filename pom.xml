@@ -4,10 +4,10 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>io.github.lovelybowen</groupId>
-    <artifactId>boot-tool</artifactId>
+    <groupId>io.github.novareseller</groupId>
+    <artifactId>dagger</artifactId>
     <version>1.0-SNAPSHOT</version>
-    <url>https://github.com/lovelybowen/bee-tool</url>
+    <url>https://github.com/novareseller/dagger</url>
     
     <modules>
         <module>database</module>
@@ -43,37 +43,37 @@
     <dependencyManagement>
         <dependencies>
             <dependency>
-                <groupId>io.github.lovelybowen</groupId>
+                <groupId>io.github.novareseller</groupId>
                 <artifactId>tool</artifactId>
                 <version>${goose.bee.tool.version}</version>
             </dependency>
 
             <dependency>
-                <groupId>io.github.lovelybowen</groupId>
+                <groupId>io.github.novareseller</groupId>
                 <artifactId>log</artifactId>
                 <version>${goose.bee.tool.version}</version>
             </dependency>
 
             <dependency>
-                <groupId>io.github.lovelybowen</groupId>
+                <groupId>io.github.novareseller</groupId>
                 <artifactId>cache</artifactId>
                 <version>${goose.bee.tool.version}</version>
             </dependency>
 
             <dependency>
-                <groupId>io.github.lovelybowen</groupId>
+                <groupId>io.github.novareseller</groupId>
                 <artifactId>database</artifactId>
                 <version>${goose.bee.tool.version}</version>
             </dependency>
 
             <dependency>
-                <groupId>io.github.lovelybowen</groupId>
+                <groupId>io.github.novareseller</groupId>
                 <artifactId>oss</artifactId>
                 <version>${goose.bee.tool.version}</version>
             </dependency>
 
             <dependency>
-                <groupId>io.github.lovelybowen</groupId>
+                <groupId>io.github.novareseller</groupId>
                 <artifactId>security</artifactId>
                 <version>${goose.bee.tool.version}</version>
             </dependency>
@@ -93,14 +93,14 @@
         <developer>
             <name>Bowen Huang</name>
             <email>lovelybowen@163.com</email>
-            <url>https://github.com/lovelybowen</url>
+            <url>https://github.com/novareseller</url>
         </developer>
     </developers>
 
     <scm>
-        <connection>scm:git:git://github.com/lovelybowen/bee-tool.git</connection>
-        <developerConnection>scm:git:ssh://github.com/lovelybowen/bee-tool.git</developerConnection>
-        <url>https://github.com/lovelybowen/bee-tool/tree/master</url>
+        <connection>scm:git:git://github.com/novareseller/dagger.git</connection>
+        <developerConnection>scm:git:ssh://github.com/novareseller/dagger.git</developerConnection>
+        <url>https://github.com/novareseller/dagger/tree/master</url>
     </scm>
 
 

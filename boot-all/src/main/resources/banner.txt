@@ -7,5 +7,5 @@ ${AnsiColor.BRIGHT_CYAN}  \__, |\___/ \___/|___/\___|        ${AnsiColor.BLUE} |
 ${AnsiColor.BRIGHT_CYAN}  __/ |                              ${AnsiColor.BLUE} | |
 ${AnsiColor.BRIGHT_CYAN} |___/                               ${AnsiColor.BLUE} |_|
 
-${AnsiColor.BLUE}:: goose-Panel :: ${spring.application.name}:${AnsiColor.RED}power by Bowen${AnsiColor.BLUE} :: Running SpringBoot ${spring-boot.version} :: ${AnsiColor.BRIGHT_BLACK}
+${AnsiColor.BLUE}:: goose-Panel :: ${spring.application.name}:${AnsiColor.RED}power by Novareseller Team${AnsiColor.BLUE} :: Running SpringBoot ${spring-boot.version} :: ${AnsiColor.BRIGHT_BLACK}
 
