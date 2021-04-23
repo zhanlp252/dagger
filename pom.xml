@@ -12,7 +12,6 @@
     <modules>
         <module>database</module>
         <module>tool</module>
-        <module>log</module>
         <module>security</module>
         <module>boot-all</module>
         <module>cache</module>
