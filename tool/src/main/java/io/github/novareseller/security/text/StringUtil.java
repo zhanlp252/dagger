@@ -1,4 +1,4 @@
-package io.github.novareseller.tool.text;
+package io.github.novareseller.security.text;
 
 
 import org.apache.commons.lang3.StringUtils;

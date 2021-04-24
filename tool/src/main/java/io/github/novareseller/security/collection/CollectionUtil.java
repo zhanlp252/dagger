@@ -1,7 +1,7 @@
-package io.github.novareseller.tool.collection;
+package io.github.novareseller.security.collection;
 
 
-import io.github.novareseller.tool.utils.Validator;
+import io.github.novareseller.security.utils.Validator;
 
 import java.util.*;
 import java.util.function.Consumer;

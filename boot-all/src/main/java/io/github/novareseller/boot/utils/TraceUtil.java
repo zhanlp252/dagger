@@ -1,7 +1,7 @@
 package io.github.novareseller.boot.utils;
 
 import io.github.lovelybowen.log.constant.TraceConstant;
-import io.github.novareseller.tool.text.StringUtil;
+import io.github.novareseller.security.text.StringUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.MDC;
 import org.springframework.web.context.request.RequestContextHolder;

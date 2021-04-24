@@ -1,4 +1,4 @@
-package io.github.novareseller.tool.utils;
+package io.github.novareseller.security.utils;
 
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;

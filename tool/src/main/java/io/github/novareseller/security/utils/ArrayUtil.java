@@ -1,4 +1,4 @@
-package io.github.novareseller.tool.utils;
+package io.github.novareseller.security.utils;
 
 /**
  * @Auther: huangxingyao

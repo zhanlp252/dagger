@@ -1,4 +1,4 @@
-package io.github.novareseller.tool.utils;
+package io.github.novareseller.security.utils;
 
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;

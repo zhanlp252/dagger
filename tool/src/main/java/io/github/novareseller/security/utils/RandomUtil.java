@@ -1,6 +1,6 @@
-package io.github.novareseller.tool.utils;
+package io.github.novareseller.security.utils;
 
-import io.github.novareseller.tool.text.StringPool;
+import io.github.novareseller.security.text.StringPool;
 
 import java.util.UUID;
 import java.util.concurrent.ThreadLocalRandom;

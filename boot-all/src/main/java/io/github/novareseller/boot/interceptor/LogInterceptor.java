@@ -1,7 +1,7 @@
 package io.github.novareseller.boot.interceptor;
 
 import io.github.novareseller.boot.constants.TraceConstant;
-import io.github.novareseller.tool.text.StringUtil;
+import io.github.novareseller.security.text.StringUtil;
 import org.slf4j.MDC;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;

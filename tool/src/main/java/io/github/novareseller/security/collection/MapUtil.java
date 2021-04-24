@@ -1,4 +1,4 @@
-package io.github.novareseller.tool.collection;
+package io.github.novareseller.security.collection;
 
 
 import javax.servlet.http.HttpServletRequest;
