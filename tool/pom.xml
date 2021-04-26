@@ -30,14 +30,14 @@
             <artifactId>commons-collections4</artifactId>
             <version>4.4</version>
         </dependency>
-        <dependency>
+        <!--<dependency>
             <groupId>org.apache.tomcat.embed</groupId>
             <artifactId>tomcat-embed-core</artifactId>
             <version>9.0.43</version>
             <scope>compile</scope>
         </dependency>
 
-        <!-- 阿里JSON解析器 -->
+        &lt;!&ndash; 阿里JSON解析器 &ndash;&gt;
         <dependency>
             <groupId>com.alibaba</groupId>
             <artifactId>fastjson</artifactId>
@@ -49,7 +49,7 @@
             <artifactId>slf4j-api</artifactId>
             <version>1.7.25</version>
             <scope>compile</scope>
-        </dependency>
+        </dependency>-->
 
     </dependencies>
 </project>

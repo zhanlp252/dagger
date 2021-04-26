@@ -27,9 +27,9 @@ import io.jsonwebtoken.SignatureAlgorithm;
 public class SaTokenJwtUtil {
 
 	/**
-	 * 秘钥 (随便手打几个字母就好了)
+	 * secret
 	 */
-	public static final String BASE64_SECURITY = "79e7c69681b8270162386e6daa53d1dd";
+	public static final String BASE64_SECURITY = "0162386e6daa53d1dd79e7c69681b827";
 
 	/**
 	 * token有效期 (单位: 秒)
@@ -55,21 +55,15 @@ public class SaTokenJwtUtil {
 		JwtBuilder builder = Jwts.builder()
 				.setHeaderParam("type", "JWT")
 				.claim(LOGIN_ID_KEY, loginId)
-				.setIssuedAt(new Date())	// 签发日期
-				.setExpiration(new Date(System.currentTimeMillis() + 1000 * TIMEOUT))  // 有效截止日期
-				.signWith(SignatureAlgorithm.HS256, BASE64_SECURITY.getBytes()); // 加密算法
-		//生成JWT
+				.setIssuedAt(new Date())
+				.setExpiration(new Date(System.currentTimeMillis() + 1000 * TIMEOUT))
+				.signWith(SignatureAlgorithm.HS256, BASE64_SECURITY.getBytes());
+
 		return builder.compact();
 	}
 
-	/**
-	 * 从一个jwt里面解析出Claims
-	 * @param tokenValue token值
-	 * @param base64Security 秘钥
-	 * @return Claims对象
-	 */
+
 	public static Claims getClaims(String tokenValue) {
-//    	System.out.println(tokenValue);
 		Claims claims = Jwts.parser()
 				.setSigningKey(BASE64_SECURITY.getBytes())
 				.parseClaimsJws(tokenValue).getBody();
@@ -90,7 +84,6 @@ public class SaTokenJwtUtil {
 			}
 			return String.valueOf(loginId);
 		} catch (ExpiredJwtException e) {
-//        	throw NotLoginException.newInstance(StpUtil.stpLogic.loginKey, NotLoginException.TOKEN_TIMEOUT);
 			return NotLoginException.TOKEN_TIMEOUT;
 		} catch (MalformedJwtException e) {
 			throw NotLoginException.newInstance(StpUtil.stpLogic.loginKey, NotLoginException.INVALID_TOKEN);
@@ -205,14 +198,9 @@ public class SaTokenJwtUtil {
 				info.loginId = getLoginIdDefaultNull();
 				info.loginKey = getLoginKey();
 				info.tokenTimeout = getTokenTimeout();
-//    			info.sessionTimeout = getSessionTimeout();
-//    			info.tokenSessionTimeout = getTokenSessionTimeout();
-//    			info.tokenActivityTimeout = getTokenActivityTimeout();
 				info.loginDevice = getLoginDevice();
 				return info;
 			}
-
-
 		};
 
 	}
