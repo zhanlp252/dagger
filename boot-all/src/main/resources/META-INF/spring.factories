@@ -1,2 +1,2 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-io.github.lovelybowen.web.config.WebMvcConfig
+io.github.novareseller.boot.config.WebMvcConfig
