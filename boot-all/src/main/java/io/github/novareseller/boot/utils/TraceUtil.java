@@ -1,6 +1,7 @@
 package io.github.novareseller.boot.utils;
 
-import io.github.lovelybowen.log.constant.TraceConstant;
+
+import io.github.novareseller.boot.constants.TraceConstant;
 import io.github.novareseller.security.text.StringUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.MDC;
