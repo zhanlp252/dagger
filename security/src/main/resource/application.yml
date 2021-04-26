@@ -2,7 +2,9 @@ spring:
   # sa-token配置
   sa-token:
     # token名称 (同时也是cookie名称)
-    token-name: authorization
+    token-name: Authorization
+    # prefix
+    token-prefix: Bearer
     # token有效期，单位s 默认30天, -1代表永不过期
     timeout: 43200
     # token临时有效期 (指定时间内无操作就视为token过期) 单位: 秒
@@ -19,3 +21,5 @@ spring:
     is-v: false
     # 打印日志
     is-log: false
+    jwt:
+      algorithm: HS256
