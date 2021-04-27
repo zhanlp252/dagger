@@ -1,3 +1,0 @@
-org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-io.github.novareseller.security.config.JwtConfig\
-io.github.novareseller.security.properties.JwtProperties

@@ -7,21 +7,32 @@ package io.github.novareseller.security.properties;
 public class Const {
 
     /**
-     * secret
+     * ################################
+     * default secret
+     * ################################
      */
-    public static final String BASE64_SECURITY = "0162386e6daa53d1dd79e7c69681b827";
+    public static final String JWT_SECURITY = "3a34e26a61c034d5ec8245d8677df7fc";
 
 
-    public static final String LOGIN_ID_KEY = "uid";
-
+    /**
+     * ################################
+     * claims constant
+     * ################################
+     */
+    public static final String LOGIN_ID = "uid";
     public static final String LOGIN_COUNTRY = "country";
-
     public static final String LOGIN_LANGUAGE = "language";
-
     public static final String LOGIN_TERMINAL = "terminal";
-
     public static final String LOGIN_TYPE = "type";
 
 
+    /**
+     * ################################
+     * error code
+     * ################################
+     */
+    public static final int JWT_ERRCODE_NULL = 4000;
+    public static final int JWT_ERRCODE_EXPIRE = 4001;
+    public static final int JWT_ERRCODE_FAIL = 4002;
 
 }
