@@ -2,16 +2,12 @@ package io.github.novareseller.boot.interceptor;
 
 import io.github.novareseller.boot.utils.IpUtils;
 import io.github.novareseller.log.constants.TraceConstant;
-import io.github.novareseller.security.config.JwtRegisterBean;
-import io.github.novareseller.security.context.LoginUser;
+import io.github.novareseller.security.context.SecurityContext;
 import io.github.novareseller.security.text.StringUtil;
-import io.jsonwebtoken.Claims;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.MDC;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
 import javax.servlet.http.HttpServletRequest;
@@ -28,8 +24,6 @@ import java.nio.charset.StandardCharsets;
 @Slf4j
 public class LogInterceptor extends HandlerInterceptorAdapter {
 
-    @Autowired
-    private JwtRegisterBean jwtRegisterBean;
 
     private static final String TOKEN = "Authorization";
 
@@ -45,41 +39,32 @@ public class LogInterceptor extends HandlerInterceptorAdapter {
      */
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-        addLog(request);
-        String address = IpUtils.getRemoteHost(request);
-        log.info("Request: url={}, address={}", request.getRequestURI(), address);
-
         String authorization = request.getHeader(TOKEN);
-        log.info("user authorization={}", authorization);
-        if ( null == authorization || "null".equals(authorization)||"".equals(authorization)) {
-            log.warn("Login token is required. url={}", request.getRequestURI());
-            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-            return false;
-        }
-
-        try {
-            //parse jwt
-            Claims claims = jwtRegisterBean.parseTokenClaims(authorization);
-            log.info("LoginUser={}", LoginUser.claims2LoginUser(claims));
-        } catch(Exception ex){
-            log.error("token decode error. loginToken={},url={},method={}",authorization, request.getRequestURI(), request.getMethod(),ex);
-            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-            return false;
-        }
-        return true;
-    }
-
-
-    private void addLog(HttpServletRequest request) throws Exception {
+        String authorizationHash = StringUtils.isBlank(authorization) ? null : String.format("%08x", authorization.hashCode());
         String uri= request.getRequestURI();
         String method = request.getMethod();
         String host = IpUtils.getRemoteHost(request);
         byte[] data = readRequestData(request);
         String text = data == null ? "" : new String(data, StandardCharsets.UTF_8);
-        log.info("http request: method={}, uri={}, host={}, data={}", method, uri, host, text);
+        log.info("http request:token_hash={},method={}, uri={}, host={}, data={}", authorizationHash, method, uri, host, text);
+
+
+        String traceId = StringUtils.defaultString(request.getHeader(TraceConstant.HTTP_HEADER_TRACE_ID), MDC.get(TraceConstant.LOG_B3_TRACEID));
+        if (StringUtil.isNotEmpty(traceId)) {
+            MDC.put(TraceConstant.LOG_TRACE_ID, authorizationHash);
+        }
+        return true;
     }
 
-    protected byte[] readRequestData(HttpServletRequest request) throws IOException {
+    @Override
+    public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex)
+            throws Exception {
+        MDC.remove(TraceConstant.LOG_TRACE_ID);
+        SecurityContext.clear();
+    }
+
+
+    private byte[] readRequestData(HttpServletRequest request) throws IOException {
         ByteArrayOutputStream bout = new ByteArrayOutputStream();
         try ( InputStream in = request.getInputStream() ) {
             IOUtils.copy(in, bout);
@@ -91,5 +76,18 @@ public class LogInterceptor extends HandlerInterceptorAdapter {
         }
         return bout.toByteArray();
     }
+
+    /*private byte[] readResponseData(HttpServletResponse response) throws IOException {
+        ByteArrayInputStream in = new ByteArrayInputStream();
+        try ( OutputStream out = response.getOutputStream() ) {
+            IOUtils.copy(in, bout);
+            try {
+                in.reset();
+            } catch ( IOException ex ) {
+                log.error("Failed to reset input stream.", ex);
+            }
+        }
+        return bout.toByteArray();
+    }*/
 
 }

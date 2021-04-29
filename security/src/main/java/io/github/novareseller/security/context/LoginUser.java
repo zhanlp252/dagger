@@ -16,6 +16,8 @@ public class LoginUser {
 
     private long tenantId;
     private long uid;
+    private String clientIp;
+    private String language = "en";
 
 
     public static final LoginUser claims2LoginUser(Claims claims) {

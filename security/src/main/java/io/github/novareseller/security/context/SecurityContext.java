@@ -8,7 +8,7 @@ public class SecurityContext {
 
     static ThreadLocal<LoginUser> loginUserThreadLocal = new InheritableThreadLocal<LoginUser>(){
         @Override
-        public LoginUser get() {
+        protected LoginUser initialValue() {
             return new LoginUser();
         }
     };
@@ -16,13 +16,9 @@ public class SecurityContext {
 
     /**
      *
-     * @param tenantId
-     * @param uid
+     * @param loginUser
      */
-    public static void setLoginUser(long tenantId, long uid) {
-        LoginUser loginUser = new LoginUser();
-        loginUser.setTenantId(tenantId);
-        loginUser.setUid(uid);
+    public static void setLoginUser(LoginUser loginUser) {
         loginUserThreadLocal.set(loginUser);
     }
 

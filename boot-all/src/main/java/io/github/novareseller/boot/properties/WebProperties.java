@@ -20,12 +20,14 @@ public class WebProperties {
             "/v2/api-docs/**", "/swagger-ui.html", "/swagger-resources/**", "/webjars/**" ,
             "/**/v2/api-docs/**", "/**/swagger-ui.html", "/**/swagger-resources/**", "/**/webjars/**",
             "/**/turbine.stream","/**/turbine.stream**/**", "/**/hystrix", "/**/hystrix.stream", "/**/hystrix/**", "/**/hystrix/**/**",	"/**/proxy.stream/**" ,
-            "/**/druid/**", "/**/favicon.ico", "/**/prometheus","/favicon.ico"
+            "/**/druid/**", "/**/favicon.ico", "/**/prometheus","/favicon.ico","/ping/v1"
     };
 
     private List<String> excludePathPatterns;
 
 
-    private List<String> filterExcludes;
+    private List<String> excludeAuthenticatePathPatterns;
+
+    private List<String> excludeCacheRequestPathPatterns;
 
 }

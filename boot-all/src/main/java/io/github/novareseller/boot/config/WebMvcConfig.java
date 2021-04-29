@@ -7,14 +7,16 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.code.kaptcha.impl.DefaultKaptcha;
 import com.google.code.kaptcha.util.Config;
-import io.github.novareseller.boot.filter.CachingContentFilter;
+import io.github.novareseller.boot.filter.AuthenticateOncePerRequestFilter;
+import io.github.novareseller.boot.filter.CachingRequestContentFilter;
 import io.github.novareseller.boot.interceptor.LogInterceptor;
-import io.github.novareseller.boot.interceptor.TraceInterceptor;
 import io.github.novareseller.boot.properties.WebProperties;
 import io.github.novareseller.security.utils.Validator;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
@@ -46,8 +48,6 @@ public class WebMvcConfig implements WebMvcConfigurer {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
 
-        registry.addInterceptor(new TraceInterceptor()).addPathPatterns("/**");
-
         /**
          * 自定义拦截器，添加拦截路径和排除拦截路径
          * addPathPatterns():添加需要拦截的路径
@@ -76,12 +76,30 @@ public class WebMvcConfig implements WebMvcConfigurer {
         converters.add(0, converter);
     }
 
-    @Bean
-    public FilterRegistrationBean<CachingContentFilter> filterRegistrationBean() {
-        FilterRegistrationBean<CachingContentFilter> bean = new FilterRegistrationBean<>();
-        bean.setFilter(new CachingContentFilter(webProperties.getFilterExcludes()));
+    @Bean("requestFilterRegistrationBean")
+    public FilterRegistrationBean<CachingRequestContentFilter> requestFilterRegistrationBean() {
+        FilterRegistrationBean<CachingRequestContentFilter> bean = new FilterRegistrationBean<>();
+        bean.setFilter(new CachingRequestContentFilter(webProperties.getExcludeCacheRequestPathPatterns()));
         bean.setOrder(1);
         bean.addUrlPatterns("/*");
+        return bean;
+    }
+
+
+    @Bean
+    public AuthenticateOncePerRequestFilter authenticateOncePerRequestFilter() {
+        return new AuthenticateOncePerRequestFilter(webProperties.getExcludeAuthenticatePathPatterns());
+    }
+
+    @Bean("authenticateFilterRegistrationBean")
+    @ConditionalOnBean(AuthenticateOncePerRequestFilter.class)
+    public FilterRegistrationBean<AuthenticateOncePerRequestFilter> authenticateFilterRegistrationBean(
+            AuthenticateOncePerRequestFilter authenticateOncePerRequestFilter
+    ) {
+        FilterRegistrationBean<AuthenticateOncePerRequestFilter> bean = new FilterRegistrationBean<>();
+        bean.setFilter(authenticateOncePerRequestFilter);
+        bean.setOrder(1);
+        bean.addUrlPatterns("/api/*");
         return bean;
     }
 
