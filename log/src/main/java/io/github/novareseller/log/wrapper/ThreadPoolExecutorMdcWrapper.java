@@ -1,6 +1,5 @@
-package io.github.novareseller.boot.wrapper;
+package io.github.novareseller.log.wrapper;
 
-import io.github.novareseller.boot.utils.ThreadMdcUtil;
 import org.slf4j.MDC;
 
 import java.util.concurrent.*;

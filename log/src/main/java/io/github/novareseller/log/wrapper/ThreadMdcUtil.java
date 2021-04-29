@@ -1,4 +1,4 @@
-package io.github.novareseller.boot.utils;
+package io.github.novareseller.log.wrapper;
 
 import org.slf4j.MDC;
 
@@ -27,7 +27,7 @@ public class ThreadMdcUtil {
             } else {
                 MDC.setContextMap(context);
             }
-            TraceUtil.getTrace();
+            //TraceUtil.getTrace();
             try {
                 return callable.call();
             } finally {
@@ -55,7 +55,7 @@ public class ThreadMdcUtil {
                 } else {
                     MDC.setContextMap(context);
                 }
-                TraceUtil.getTrace();
+                //TraceUtil.getTrace();
                 try {
                     runnable.run();
                 } finally {

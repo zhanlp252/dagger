@@ -1,4 +1,4 @@
-package io.github.novareseller.boot.constants;
+package io.github.novareseller.log.constants;
 
 /**
  * @description:日志跟踪常量

@@ -16,6 +16,7 @@
         <module>boot-all</module>
         <module>cache</module>
         <module>oss</module>
+        <module>log</module>
     </modules>
     <packaging>pom</packaging>
 
@@ -78,6 +79,11 @@
                 <version>${dagger.version}</version>
             </dependency>
 
+            <dependency>
+                <groupId>io.github.novareseller</groupId>
+                <artifactId>log</artifactId>
+                <version>${dagger.version}</version>
+            </dependency>
 
         </dependencies>
     </dependencyManagement>

@@ -1,5 +1,7 @@
 package io.github.novareseller.database.base;
 
+import com.baomidou.mybatisplus.annotation.FieldFill;
+import com.baomidou.mybatisplus.annotation.TableField;
 import lombok.Data;
 
 /**
@@ -11,6 +13,7 @@ public class TenantEntity extends BaseEntity<TenantEntity> {
 
     private static final long serialVersionUID = 7393111163846132019L;
 
+    @TableField(fill = FieldFill.INSERT)
     private Long tenantId;
 
 }
