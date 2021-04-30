@@ -11,6 +11,7 @@ import io.github.novareseller.boot.filter.AuthenticateOncePerRequestFilter;
 import io.github.novareseller.boot.filter.CachingRequestContentFilter;
 import io.github.novareseller.boot.interceptor.LogInterceptor;
 import io.github.novareseller.boot.properties.WebProperties;
+import io.github.novareseller.security.config.JwtRegisterBean;
 import io.github.novareseller.security.utils.Validator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
@@ -87,6 +88,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
 
 
     @Bean
+    @ConditionalOnBean(JwtRegisterBean.class)
     public AuthenticateOncePerRequestFilter authenticateOncePerRequestFilter() {
         return new AuthenticateOncePerRequestFilter(webProperties.getExcludeAuthenticatePathPatterns());
     }
