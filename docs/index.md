@@ -38,7 +38,7 @@
 ```java
 
  
- 步骤 1, 在@SpringBootApplication带注释的类上打开@EnableDaggerJwt注释。
+ 步骤 1, 在@SpringBootApplication带注释的类上打开@EnableDaggerJwt注释
   例:
  
   @SpringBootApplication
@@ -52,7 +52,7 @@
   }
  
  
- 步骤 2, 将JwtRegisterBean注入到需要使用的类中。
+ 步骤 2, 将JwtRegisterBean注入到需要使用的类中
   例:
  
   @RestController
