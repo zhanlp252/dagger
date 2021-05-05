@@ -2,7 +2,7 @@ package io.github.novareseller.database.support;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.StringPool;
-import io.github.novareseller.security.text.StringUtil;
+import io.github.novareseller.tool.text.StringUtil;
 import org.apache.commons.collections4.MapUtils;
 import org.springframework.util.StringUtils;
 

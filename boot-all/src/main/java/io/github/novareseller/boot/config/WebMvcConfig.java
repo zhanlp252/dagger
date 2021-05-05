@@ -9,18 +9,18 @@ import com.google.code.kaptcha.impl.DefaultKaptcha;
 import com.google.code.kaptcha.util.Config;
 import io.github.novareseller.boot.filter.AuthenticateOncePerRequestFilter;
 import io.github.novareseller.boot.filter.CachingRequestContentFilter;
-import io.github.novareseller.boot.interceptor.LogInterceptor;
+import io.github.novareseller.boot.interceptor.ApiLogInterceptor;
 import io.github.novareseller.boot.properties.WebProperties;
 import io.github.novareseller.security.config.JwtRegisterBean;
-import io.github.novareseller.security.utils.Validator;
+import io.github.novareseller.tool.utils.Validator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
-import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
@@ -41,6 +41,7 @@ import java.util.Properties;
 @EnableConfigurationProperties({WebProperties.class})
 @ConditionalOnClass(WebMvcConfigurer.class)
 @EnableWebMvc
+@ComponentScan(basePackages = "io.github.novareseller")
 public class WebMvcConfig implements WebMvcConfigurer {
 
     @Autowired
@@ -55,7 +56,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
          * excludePathPatterns():添加不需要拦截的路径
          * 在括号中还可以使用集合的形式，如注释部分代码所示
          */
-        InterceptorRegistration interceptorRegistration = registry.addInterceptor(new LogInterceptor())
+        InterceptorRegistration interceptorRegistration = registry.addInterceptor(new ApiLogInterceptor())
                 .addPathPatterns("/api/**")
                 .excludePathPatterns(WebProperties.ENDPOINTS);
         if (!Validator.isNullOrEmpty(webProperties.getExcludePathPatterns())) {
@@ -68,7 +69,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
     public void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
         ObjectMapper mapper = new ObjectMapper();
         mapper.enable(DeserializationFeature.USE_BIG_DECIMAL_FOR_FLOATS);
-        mapper.setDateFormat(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"));
+        mapper.setDateFormat(new SimpleDateFormat(webProperties.getDateFormatPattern()));
         mapper.configure(JsonGenerator.Feature.QUOTE_FIELD_NAMES, true);
         mapper.configure(JsonParser.Feature.ALLOW_UNQUOTED_FIELD_NAMES, true);
         mapper.configure(JsonParser.Feature.ALLOW_SINGLE_QUOTES, true);
@@ -80,9 +81,9 @@ public class WebMvcConfig implements WebMvcConfigurer {
     @Bean("requestFilterRegistrationBean")
     public FilterRegistrationBean<CachingRequestContentFilter> requestFilterRegistrationBean() {
         FilterRegistrationBean<CachingRequestContentFilter> bean = new FilterRegistrationBean<>();
-        bean.setFilter(new CachingRequestContentFilter(webProperties.getExcludeCacheRequestPathPatterns()));
-        bean.setOrder(1);
-        bean.addUrlPatterns("/*");
+        bean.setFilter(new CachingRequestContentFilter(webProperties.getExcludePathPatterns()));
+        //bean.setOrder(1);
+        bean.addUrlPatterns("/api/*");
         return bean;
     }
 
@@ -90,7 +91,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
     @Bean
     @ConditionalOnBean(JwtRegisterBean.class)
     public AuthenticateOncePerRequestFilter authenticateOncePerRequestFilter() {
-        return new AuthenticateOncePerRequestFilter(webProperties.getExcludeAuthenticatePathPatterns());
+        return new AuthenticateOncePerRequestFilter(webProperties.getExcludePathPatterns());
     }
 
     @Bean("authenticateFilterRegistrationBean")
@@ -100,7 +101,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
     ) {
         FilterRegistrationBean<AuthenticateOncePerRequestFilter> bean = new FilterRegistrationBean<>();
         bean.setFilter(authenticateOncePerRequestFilter);
-        bean.setOrder(1);
+        //bean.setOrder(1);
         bean.addUrlPatterns("/api/*");
         return bean;
     }

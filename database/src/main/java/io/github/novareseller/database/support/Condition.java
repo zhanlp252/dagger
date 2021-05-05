@@ -4,8 +4,8 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.google.common.collect.ImmutableMap;
-import io.github.novareseller.security.text.StringUtil;
-import io.github.novareseller.security.utils.NumberUtil;
+import io.github.novareseller.tool.text.StringUtil;
+import io.github.novareseller.tool.utils.NumberUtil;
 import org.springframework.beans.BeanUtils;
 
 

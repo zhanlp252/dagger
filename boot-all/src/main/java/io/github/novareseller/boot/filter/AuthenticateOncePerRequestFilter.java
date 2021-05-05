@@ -1,18 +1,21 @@
 package io.github.novareseller.boot.filter;
 
 import io.github.novareseller.boot.constant.ErrorCode;
+import io.github.novareseller.boot.constant.WebConst;
 import io.github.novareseller.boot.exception.ApiException;
+import io.github.novareseller.boot.interceptor.HttpLogHandler;
 import io.github.novareseller.boot.properties.WebProperties;
 import io.github.novareseller.boot.utils.IpUtils;
 import io.github.novareseller.boot.utils.SpringUtils;
 import io.github.novareseller.security.config.JwtRegisterBean;
 import io.github.novareseller.security.context.LoginUser;
 import io.github.novareseller.security.context.SecurityContext;
-import io.github.novareseller.security.utils.Validator;
+import io.github.novareseller.tool.utils.Validator;
 import io.jsonwebtoken.*;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.AntPathMatcher;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import javax.servlet.FilterChain;
@@ -34,26 +37,21 @@ public class AuthenticateOncePerRequestFilter extends OncePerRequestFilter {
     @Autowired
     private JwtRegisterBean jwtRegisterBean;
 
-    private static final String TOKEN = "Authorization";
+    private static final AntPathMatcher MATCHER = new AntPathMatcher();
 
-    private static final String LANGUAGE = "language";
+    private List<String> excludePathPatterns;
 
-    private List<String> filterExcludes;
-
-
-    public AuthenticateOncePerRequestFilter(List<String> filterExcludes) {
-        this.filterExcludes = filterExcludes;
+    public AuthenticateOncePerRequestFilter(List<String> excludePathPatterns) {
+        this.excludePathPatterns = excludePathPatterns;
     }
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
 
         String requestURI = request.getRequestURI();
-        if (Validator.isNullOrEmpty(filterExcludes) ||
-                !filterExcludes.contains(requestURI)) {
+        if (!isExcludePath(requestURI)) {
 
-            String authorization = request.getHeader(TOKEN);
-            String authorizationHash = StringUtils.isBlank(authorization) ? null : String.format("%08x", authorization.hashCode());
+            String authorization = request.getHeader(WebConst.TOKEN);
             if ( null == authorization || "null".equals(authorization)||"".equals(authorization)) {
                 log.warn("login token is required. url={}", request.getRequestURI());
                 throw new ApiException(ErrorCode.REQUIRED_TOKEN, "Login token is required");
@@ -68,7 +66,6 @@ public class AuthenticateOncePerRequestFilter extends OncePerRequestFilter {
                 loginUser.setLanguage(getLanguage(request));
                 //set context data
                 SecurityContext.setLoginUser(loginUser);
-                log.info("token hash={}, login user={}", authorizationHash, LoginUser.claims2LoginUser(claims));
             } catch (ExpiredJwtException ex) {
 
                 log.error("token expired. login token={},url={},method={}", authorization, request.getRequestURI(), request.getMethod(), ex);
@@ -88,15 +85,15 @@ public class AuthenticateOncePerRequestFilter extends OncePerRequestFilter {
 
 
     protected String getLanguage(HttpServletRequest request) {
-        String languageParams = request.getParameter(LANGUAGE);
+        String languageParams = request.getParameter(WebConst.LANGUAGE);
         if (Objects.nonNull(languageParams) && !"".equals(languageParams)) {
             return languageParams;
         }
-        Object language = request.getSession().getAttribute(LANGUAGE);
+        Object language = request.getSession().getAttribute(WebConst.LANGUAGE);
         if (Objects.nonNull(language) && !"".equals(language)) {
             return String.valueOf(language);
         }
-        String languageInCookie = getCookieAsString(request, LANGUAGE);
+        String languageInCookie = getCookieAsString(request, WebConst.LANGUAGE);
         if (Objects.nonNull(languageInCookie)) {
             return languageInCookie;
         }
@@ -115,5 +112,15 @@ public class AuthenticateOncePerRequestFilter extends OncePerRequestFilter {
         return null;
     }
 
+    private boolean isExcludePath(String uri) {
+        if (!Validator.isNullOrEmpty(excludePathPatterns)) {
+            for (String excludePathPattern : excludePathPatterns) {
+                if (MATCHER.match(excludePathPattern, uri)) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
 
 }

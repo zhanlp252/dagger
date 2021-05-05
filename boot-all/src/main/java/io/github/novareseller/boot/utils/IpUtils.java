@@ -2,7 +2,7 @@ package io.github.novareseller.boot.utils;
 
 import com.google.common.base.Strings;
 import com.google.common.collect.ImmutableList;
-import io.github.novareseller.security.utils.Validator;
+import io.github.novareseller.tool.utils.Validator;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;

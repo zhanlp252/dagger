@@ -4,7 +4,7 @@ import com.baomidou.mybatisplus.core.handlers.MetaObjectHandler;
 import io.github.novareseller.database.support.DbConstant;
 import io.github.novareseller.security.context.LoginUser;
 import io.github.novareseller.security.context.SecurityContext;
-import io.github.novareseller.security.utils.SystemClock;
+import io.github.novareseller.tool.utils.SystemClock;
 import org.apache.ibatis.reflection.MetaObject;
 
 /**

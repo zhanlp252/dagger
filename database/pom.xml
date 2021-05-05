@@ -5,7 +5,7 @@
     <parent>
         <artifactId>dagger</artifactId>
         <groupId>io.github.novareseller</groupId>
-        <version>1.0.1.alpha</version>
+        <version>1.1.0.alpha</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 

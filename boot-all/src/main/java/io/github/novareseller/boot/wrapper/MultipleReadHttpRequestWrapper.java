@@ -1,7 +1,7 @@
 package io.github.novareseller.boot.wrapper;
 
 import com.google.common.collect.Iterables;
-import io.github.novareseller.security.utils.RandomUtils;
+import io.github.novareseller.tool.utils.RandomUtil;
 import org.apache.commons.io.IOUtils;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.utils.URLEncodedUtils;
@@ -22,7 +22,7 @@ public class MultipleReadHttpRequestWrapper extends HttpServletRequestWrapper {
 
     public MultipleReadHttpRequestWrapper(HttpServletRequest request) {
         super(request);
-        this.id = RandomUtils.getLocalString(12, RandomUtils.DIGIT);
+        this.id = RandomUtil.getLocalString(12, RandomUtil.DIGIT);
     }
 
     public String getId() {

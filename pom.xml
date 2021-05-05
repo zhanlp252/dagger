@@ -6,7 +6,7 @@
 
     <groupId>io.github.novareseller</groupId>
     <artifactId>dagger</artifactId>
-    <version>1.0.1.alpha</version>
+    <version>1.1.0.alpha</version>
     <url>https://github.com/novareseller/dagger</url>
     <name>dagger</name>
     <description>spring web rapid development tool</description>
@@ -26,13 +26,14 @@
 
     <properties>
         <java.version>1.8</java.version>
-        <dagger.version>1.0.1.alpha</dagger.version>
+        <dagger.version>1.1.0.alpha</dagger.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <maven.compiler.source>${java.version}</maven.compiler.source>
         <maven.compiler.target>${java.version}</maven.compiler.target>
         <maven.deploy.skip>true</maven.deploy.skip>
         <spring.boot.version>2.3.9.RELEASE</spring.boot.version>
+        <ttl.version>2.12.1</ttl.version>
     </properties>
 
     <dependencies>
@@ -52,11 +53,11 @@
                 <version>${dagger.version}</version>
             </dependency>
 
-            <!--dependency>
-                <groupId>io.github.novareseller</groupId>
-                <artifactId>log</artifactId>
-                <version>${goose.bee.tool.version}</version>
-            </dependency>-->
+            <dependency>
+                <groupId>com.alibaba</groupId>
+                <artifactId>transmittable-thread-local</artifactId>
+                <version>${ttl.version}</version>
+            </dependency>
 
             <dependency>
                 <groupId>io.github.novareseller</groupId>

@@ -1,0 +1,4 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+  io.github.novareseller.log.configuration.LogPropertyConfiguration,\
+  io.github.novareseller.log.configuration.LogAspectAutoConfiguration,\
+  io.github.novareseller.log.configuration.LogCommonAutoConfiguration

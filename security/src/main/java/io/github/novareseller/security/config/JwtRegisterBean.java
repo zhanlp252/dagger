@@ -2,7 +2,7 @@ package io.github.novareseller.security.config;
 
 import io.github.novareseller.security.properties.Const;
 import io.github.novareseller.security.properties.JwtProperties;
-import io.github.novareseller.security.utils.SystemClock;
+import io.github.novareseller.tool.utils.SystemClock;
 import io.jsonwebtoken.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,6 +1,6 @@
 package io.github.novareseller.boot.wrapper;
 
-import io.github.novareseller.security.utils.AbstractPrintable;
+import io.github.novareseller.tool.utils.AbstractPrintable;
 import lombok.Getter;
 import lombok.Setter;
 

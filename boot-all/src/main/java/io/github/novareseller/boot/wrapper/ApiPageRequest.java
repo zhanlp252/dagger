@@ -1,6 +1,6 @@
 package io.github.novareseller.boot.wrapper;
 
-import io.github.novareseller.security.utils.AbstractPrintable;
+import io.github.novareseller.tool.utils.AbstractPrintable;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -13,14 +13,16 @@ import lombok.Setter;
 public class ApiPageRequest extends AbstractPrintable {
 
     /**
-     * every page size
+     *  current page page number
      */
-    private long size = 10;
+    private long page = 1;
 
     /**
-     * current page number
+     * every page size
      */
-    private long current = 1;
+    private long limit = 10;
+
+
 
 
 

@@ -3,10 +3,9 @@
     <contextName>${APP_NAME}</contextName>
     <springProperty name="APP_NAME" scope="context" source="spring.application.name"/>
     <springProperty name="LOG_FILE" scope="context" source="logging.file" defaultValue="../logs/${APP_NAME}"/>
-    <springProperty name="LOG_POINT_FILE" scope="context" source="logging.file" defaultValue="../logs/biz"/>
     <springProperty name="LOG_MAXFILESIZE" scope="context" source="logback.filesize" defaultValue="50MB"/>
     <springProperty name="LOG_FILEMAXDAY" scope="context" source="logback.filemaxday" defaultValue="7"/>
-    <springProperty name="ServerIP" scope="context" source="spring.cloud.client.ip-address" defaultValue="0.0.0.0"/>
+    <!--<springProperty name="ServerIP" scope="context" source="spring.cloud.client.ip-address" defaultValue="0.0.0.0"/>-->
     <springProperty name="ServerPort" scope="context" source="server.port" defaultValue="0000"/>
 
     <!-- 彩色日志 -->
@@ -17,13 +16,13 @@
 
     <!-- 彩色日志格式 -->
     <property name="CONSOLE_LOG_PATTERN"
-              value="[${APP_NAME}:${ServerIP}:${ServerPort}] [%clr(%X{traceId}){yellow},%clr(%X{X-B3-TraceId}){yellow}] %clr(%d{yyyy-MM-dd HH:mm:ss.SSS}){faint} %clr(%level){blue} %clr(${PID}){magenta} %clr([%thread]){orange} %clr(%logger){cyan} %m%n${LOG_EXCEPTION_CONVERSION_WORD:-%wEx}" />
-    <property name="CONSOLE_LOG_PATTERN_NO_COLOR" value="[${APP_NAME}:${ServerIP}:${ServerPort}] [%X{traceId},%X{X-B3-TraceId}] %d{yyyy-MM-dd HH:mm:ss.SSS} %level ${PID} [%thread] %logger %m%n${LOG_EXCEPTION_CONVERSION_WORD:-%wEx}" />
+              value="[${APP_NAME}:${ServerPort}] %clr(%d{yyyy-MM-dd HH:mm:ss.SSS}){faint} %clr(%level){blue} %clr(%X{mdc-var}){blue} %clr(${PID}){magenta} %clr([%thread]){orange} %clr(%logger{50}){cyan} - %m%n${LOG_EXCEPTION_CONVERSION_WORD:-%wEx}" />
+    <property name="CONSOLE_LOG_PATTERN_NO_COLOR" value="[${APP_NAME}:${ServerPort}] %d{yyyy-MM-dd HH:mm:ss.SSS} %level %X{mdc-var} ${PID} [%thread] %logger{50} - %m%n${LOG_EXCEPTION_CONVERSION_WORD:-%wEx}" />
 
     <!-- 控制台日志 -->
     <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
         <withJansi>true</withJansi>
-        <encoder>
+        <encoder class="io.github.novareseller.log.enhance.logback.AspectLogbackEncoder">
             <pattern>${CONSOLE_LOG_PATTERN}</pattern>
             <charset>UTF-8</charset>
         </encoder>
@@ -39,7 +38,7 @@
              <!--保留时间,单位:天-->
             <maxHistory>30</maxHistory>
         </rollingPolicy>
-        <encoder>
+        <encoder class="io.github.novareseller.log.enhance.logback.AspectLogbackEncoder">
             <pattern>${CONSOLE_LOG_PATTERN_NO_COLOR}</pattern>
             <charset>UTF-8</charset>
         </encoder>
@@ -63,7 +62,7 @@
              <!--保留时间,单位:天-->
             <maxHistory>30</maxHistory>
         </rollingPolicy>
-        <encoder>
+        <encoder class="io.github.novareseller.log.enhance.logback.AspectLogbackEncoder">
             <pattern>${CONSOLE_LOG_PATTERN_NO_COLOR}</pattern>
             <charset>UTF-8</charset>
         </encoder>

@@ -14,7 +14,7 @@ import com.baomidou.mybatisplus.extension.plugins.inner.TenantLineInnerIntercept
 import io.github.novareseller.database.properties.TenantProperties;
 import io.github.novareseller.database.support.SqlLogInterceptor;
 import io.github.novareseller.security.context.SecurityContext;
-import io.github.novareseller.security.utils.Validator;
+import io.github.novareseller.tool.utils.Validator;
 import net.sf.jsqlparser.expression.Expression;
 import net.sf.jsqlparser.expression.LongValue;
 import net.sf.jsqlparser.expression.NullValue;
