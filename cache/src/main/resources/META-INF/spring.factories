@@ -1,0 +1,4 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+io.github.novarseller.cache.autoconfigure.J2CacheAutoConfiguration,\
+io.github.novarseller.cache.autoconfigure.J2CacheSpringCacheAutoConfiguration,\
+io.github.novarseller.cache.autoconfigure.J2CacheSpringRedisAutoConfiguration
