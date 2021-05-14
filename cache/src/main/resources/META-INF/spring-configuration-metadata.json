@@ -1,8 +1,28 @@
 {
   "properties": [
     {
-      "name": "j2cache.config-location",
+      "name": "spring.dagger.cache.config-location",
       "type": "java.lang.String"
+    },
+    {
+      "name": "spring.dagger.cache.open-spring-cache",
+      "type": "java.lang.Boolean"
+    },
+    {
+      "name": "spring.dagger.cache.cache-clean-mode",
+      "type": "java.lang.String"
+    },
+    {
+      "name": "spring.dagger.cache.allow-null-values",
+      "type": "java.lang.Boolean"
+    },
+    {
+      "name": "spring.dagger.cache.redis-client",
+      "type": "java.lang.String"
+    },
+    {
+      "name": "spring.dagger.cache.l2-cache-open",
+      "type": "java.lang.Boolean"
     }
   ]
 }

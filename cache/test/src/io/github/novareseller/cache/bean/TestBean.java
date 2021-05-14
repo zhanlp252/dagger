@@ -1,24 +1,18 @@
 package io.github.novareseller.cache.bean;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import java.io.Serializable;
 
+@Getter
+@Setter
 public class TestBean implements Serializable{
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-	
-	
-	private Integer num;
+	private static final long serialVersionUID = -1873808348888831398L;
 
-	public Integer getNum() {
-		return num;
-	}
+	private String name;
 
-	public void setNum(Integer num) {
-		this.num = num;
-	}
-	
-	
+	private Integer age;
+
 }
