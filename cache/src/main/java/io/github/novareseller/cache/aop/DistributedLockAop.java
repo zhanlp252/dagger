@@ -5,7 +5,7 @@ package io.github.novareseller.cache.aop;
  * @date: 2021/05/14
  */
 
-import io.github.novareseller.cache.annotation.Lock;
+import io.github.novareseller.cache.annotation.DistributedLock;
 import io.github.novareseller.cache.enums.LockModel;
 import io.github.novareseller.cache.exception.LockException;
 import io.github.novareseller.cache.properties.RedissonProperties;
@@ -39,7 +39,7 @@ import java.util.concurrent.TimeUnit;
  */
 @Aspect
 @Order(-10)
-public class LockAop {
+public class DistributedLockAop {
 
     private Logger log = LoggerFactory.getLogger(getClass());
 
@@ -49,29 +49,29 @@ public class LockAop {
     @Autowired
     private RedissonClient redissonClient;
 
-    @Pointcut("@annotation(lock)")
-    public void controllerAspect(Lock lock) {
+    @Pointcut("@annotation(distributedLock)")
+    public void controllerAspect(DistributedLock distributedLock) {
     }
 
 
-    @Around("controllerAspect(lock)")
-    public Object aroundAdvice(ProceedingJoinPoint proceedingJoinPoint, Lock lock) throws Throwable {
-        String[] keys = lock.keys();
+    @Around("controllerAspect(distributedLock)")
+    public Object aroundAdvice(ProceedingJoinPoint proceedingJoinPoint, DistributedLock distributedLock) throws Throwable {
+        String[] keys = distributedLock.keys();
         if (keys.length == 0) {
             throw new RuntimeException("keys cannot be empty");
         }
         String[] parameterNames = new LocalVariableTableParameterNameDiscoverer().getParameterNames(((MethodSignature) proceedingJoinPoint.getSignature()).getMethod());
         Object[] args = proceedingJoinPoint.getArgs();
 
-        long attemptTimeout = lock.attemptTimeout();
+        long attemptTimeout = distributedLock.attemptTimeout();
         if (attemptTimeout == 0) {
             attemptTimeout = redissonProperties.getAttemptTimeout();
         }
-        long lockWatchdogTimeout = lock.lockWatchdogTimeout();
+        long lockWatchdogTimeout = distributedLock.lockWatchdogTimeout();
         if (lockWatchdogTimeout == 0) {
             lockWatchdogTimeout = redissonProperties.getLockWatchdogTimeout();
         }
-        LockModel lockModel = lock.lockModel();
+        LockModel lockModel = distributedLock.lockModel();
         if (lockModel.equals(LockModel.AUTO)) {
             LockModel lockModel1 = redissonProperties.getLockModel();
             if (lockModel1 != null) {
@@ -92,12 +92,12 @@ public class LockAop {
         //一直等待加锁.
         switch (lockModel) {
             case FAIR:
-                rLock = redissonClient.getFairLock(getVauleBySpel(keys[0],parameterNames,args,lock.keyConstant()).get(0));
+                rLock = redissonClient.getFairLock(getVauleBySpel(keys[0],parameterNames,args, distributedLock.keyConstant()).get(0));
                 break;
             case REDLOCK:
                 List<RLock> rLocks=new ArrayList<>();
                 for (String key : keys) {
-                    List<String> vauleBySpel = getVauleBySpel(key, parameterNames, args, lock.keyConstant());
+                    List<String> vauleBySpel = getVauleBySpel(key, parameterNames, args, distributedLock.keyConstant());
                     for (String s : vauleBySpel) {
                         rLocks.add(redissonClient.getLock(s));
                     }
@@ -113,7 +113,7 @@ public class LockAop {
                 rLocks=new ArrayList<>();
 
                 for (String key : keys) {
-                    List<String> vauleBySpel = getVauleBySpel(key, parameterNames, args, lock.keyConstant());
+                    List<String> vauleBySpel = getVauleBySpel(key, parameterNames, args, distributedLock.keyConstant());
                     for (String s : vauleBySpel) {
                         rLocks.add(redissonClient.getLock(s));
                     }
@@ -126,7 +126,7 @@ public class LockAop {
                 rLock = new RedissonMultiLock(locks);
                 break;
             case REENTRANT:
-                List<String> vauleBySpel = getVauleBySpel(keys[0], parameterNames, args, lock.keyConstant());
+                List<String> vauleBySpel = getVauleBySpel(keys[0], parameterNames, args, distributedLock.keyConstant());
                 //如果spel表达式是数组或者LIST 则使用红锁
                 if(vauleBySpel.size()==1){
                     rLock= redissonClient.getLock(vauleBySpel.get(0));
@@ -140,11 +140,11 @@ public class LockAop {
                 }
                 break;
             case READ:
-                RReadWriteLock rwlock = redissonClient.getReadWriteLock(getVauleBySpel(keys[0],parameterNames,args, lock.keyConstant()).get(0));
+                RReadWriteLock rwlock = redissonClient.getReadWriteLock(getVauleBySpel(keys[0],parameterNames,args, distributedLock.keyConstant()).get(0));
                 rLock = rwlock.readLock();
                 break;
             case WRITE:
-                RReadWriteLock rwlock1 = redissonClient.getReadWriteLock(getVauleBySpel(keys[0],parameterNames,args, lock.keyConstant()).get(0));
+                RReadWriteLock rwlock1 = redissonClient.getReadWriteLock(getVauleBySpel(keys[0],parameterNames,args, distributedLock.keyConstant()).get(0));
                 rLock = rwlock1.writeLock();
                 break;
         }

@@ -7,14 +7,10 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.code.kaptcha.impl.DefaultKaptcha;
 import com.google.code.kaptcha.util.Config;
-import io.github.novareseller.boot.filter.AuthenticateOncePerRequestFilter;
 import io.github.novareseller.boot.filter.CachingRequestContentFilter;
-import io.github.novareseller.boot.interceptor.ApiLogInterceptor;
+import io.github.novareseller.boot.interceptor.UserAuthInterceptor;
 import io.github.novareseller.boot.properties.WebProperties;
-import io.github.novareseller.security.config.JwtRegisterBean;
-import io.github.novareseller.tool.utils.Validator;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -25,7 +21,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
-import org.springframework.web.servlet.config.annotation.InterceptorRegistration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
@@ -56,12 +51,10 @@ public class WebMvcConfig implements WebMvcConfigurer {
          * excludePathPatterns():添加不需要拦截的路径
          * 在括号中还可以使用集合的形式，如注释部分代码所示
          */
-        InterceptorRegistration interceptorRegistration = registry.addInterceptor(new ApiLogInterceptor())
+        registry.addInterceptor(new UserAuthInterceptor(webProperties.getExcludePathPatterns()))
                 .addPathPatterns("/api/**")
                 .excludePathPatterns(WebProperties.ENDPOINTS);
-        if (!Validator.isNullOrEmpty(webProperties.getExcludePathPatterns())) {
-            interceptorRegistration.excludePathPatterns(webProperties.getExcludePathPatterns()) ;
-        }
+
     }
 
 
@@ -88,7 +81,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
     }
 
 
-    @Bean
+    /*@Bean
     @ConditionalOnBean(JwtRegisterBean.class)
     public AuthenticateOncePerRequestFilter authenticateOncePerRequestFilter() {
         return new AuthenticateOncePerRequestFilter(webProperties.getExcludePathPatterns());
@@ -104,7 +97,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
         //bean.setOrder(1);
         bean.addUrlPatterns("/api/*");
         return bean;
-    }
+    }*/
 
     @Bean
     @ConditionalOnProperty(value = "spring.dagger.web.enable-kaptcha", havingValue = "true")
