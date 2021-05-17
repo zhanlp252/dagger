@@ -1,15 +1,21 @@
 package io.github.novareseller.boot.interceptor;
 
-import com.sun.deploy.ui.AppInfo;
+import io.github.novareseller.boot.constant.ErrorCode;
 import io.github.novareseller.boot.constant.WebConst;
-import io.github.novareseller.boot.utils.IpUtils;
+import io.github.novareseller.boot.utils.HttpUtils;
+import io.github.novareseller.boot.utils.JsonUtils;
 import io.github.novareseller.boot.utils.ResponseUtils;
+import io.github.novareseller.boot.utils.SpringUtils;
 import io.github.novareseller.boot.wrapper.ApiResponse;
 import io.github.novareseller.boot.wrapper.MultipleReadHttpRequestWrapper;
+import io.github.novareseller.security.annotation.VerifyClient;
+import io.github.novareseller.security.helper.ClientAuthorizationHelper;
+import io.github.novareseller.security.model.ClientInfo;
+import io.github.novareseller.security.spi.ClientInfoHolder;
 import io.github.novareseller.tool.utils.Validator;
-import io.micrometer.core.instrument.util.JsonUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
+import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
@@ -26,8 +32,13 @@ public class ClientAuthInterceptor extends AbsWebHandlerMethodInterceptor {
 
     @Override
     public boolean preHandleByHandlerMethod(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-        String host = IpUtils.getRemoteHost(request);
-        String region = HttpTools.getClientRegion(request);
+
+        if (!hasVerifyClientAnnotation((HandlerMethod) handler)) {
+            return true;
+        }
+
+        String host = HttpUtils.getRemoteHost(request);
+        String region = HttpUtils.getClientRegion(request);
         String uri = request.getRequestURI();
         String method = request.getMethod();
 
@@ -47,45 +58,41 @@ public class ClientAuthInterceptor extends AbsWebHandlerMethodInterceptor {
         }
 
         long timestamp;
-        int appId;
-        String algorithm = ss[0];
-        String signature = ss[3];
+        int clientId;
         try {
             timestamp = Long.parseLong(ss[1]);
-            appId = Integer.parseInt(ss[2]);
+            clientId = Integer.parseInt(ss[2]);
         } catch ( Exception ex ) {
-            log.error("Invalid authorization format: uri={}, host={}, authorization={}, timestamp={}, appid={}", uri, host, authorization, ss[1], ss[2]);
+            log.error("Invalid authorization format: uri={}, host={}, authorization={}, timestamp={}, appId={}", uri, host, authorization, ss[1], ss[2]);
             responseError(response, "Invalid authorization format");
             return false;
         }
 
-        long start = System.currentTimeMillis();
-        AppService service = ApplicationUtils.getBean(AppService.class);
-        AppInfo app = service.findAppInfo(appId);
-        if ( app == null ) {
-            log.error("Invalid appid: uri={}, host={}, authorization={}, appid={}", uri, host, authorization, appId);
-            responseError(response, "Invalid appid", System.currentTimeMillis() - start);
+        ClientInfoHolder holder = SpringUtils.getBean(ClientInfoHolder.class);
+        ClientInfo clientInfo = holder.findClientInfo(clientId);
+        if ( clientInfo == null ) {
+            log.error("Invalid appid: uri={}, host={}, authorization={}, appId={}", uri, host, authorization, clientId);
+            responseError(response, "Invalid appid");
             return false;
         }
 
-        long expiration = ConfigTools3.getLong("payment.authorization.expiration.seconds", 300L) * 1000L;
-        if ( System.currentTimeMillis() - timestamp > expiration ) {
-            logger.error("Authorization expired: uri={}, host={}, authorization={}", uri, host, authorization);
-            responseError(response, "Authorization expired", System.currentTimeMillis() - start);
+        if ( System.currentTimeMillis() - timestamp > 300 * 1000L ) {
+            log.error("Authorization expired: uri={}, host={}, authorization={}", uri, host, authorization);
+            responseError(response, "Authorization expired");
             return false;
         }
 
-        boolean success = PaymentAuthorizationHelper.verifyAuthorization(String.valueOf(appId), app.getSecretKey(), data, authorization);
+        boolean success = ClientAuthorizationHelper.verifyAuthorization(String.valueOf(clientId), clientInfo.getSecretKey(), data, authorization);
         if ( !success ) {
-            logger.error("Authorization failed: uri={}, host={}, authorization={}", uri, host, authorization);
-            responseError(response, "Invalid authorization", System.currentTimeMillis() - start);
+            log.error("Authorization failed: uri={}, host={}, authorization={}", uri, host, authorization);
+            responseError(response, "Invalid authorization");
             return false;
         }
 
-        request.setAttribute("appid", app.getId());
+        request.setAttribute("appid", clientInfo.getId());
 
         String id = String.format("%08x", request.hashCode());
-        logger.info("API request[{}]: method={}, uri={}, host={}, region={}, authorization={}, content-length={}", id, method, uri, host, region, authorization, data.length);
+        log.info("API request[{}]: method={}, uri={}, host={}, region={}, authorization={}, content-length={}", id, method, uri, host, region, authorization, data.length);
         return true;
     }
 
@@ -102,9 +109,20 @@ public class ClientAuthInterceptor extends AbsWebHandlerMethodInterceptor {
         }
     }
 
+    private boolean hasVerifyClientAnnotation(HandlerMethod handlerMethod) {
+        // 配置该注解，说明不进行服务拦截
+        VerifyClient annotation = handlerMethod.getBeanType().getAnnotation(VerifyClient.class);
+        if (annotation == null) {
+            annotation = handlerMethod.getMethodAnnotation(VerifyClient.class);
+        }
+        if (annotation != null) {
+            return true;
+        }
+        return false;
+    }
 
     private void responseError(HttpServletResponse response, String message) throws Exception {
-        ApiResponse<?> error = ResponseUtils.error(WebConst.ERR_UNAUTHORIZED_REQUEST, message);
+        ApiResponse<?> error = ResponseUtils.error(ErrorCode.ERR_UNAUTHORIZED_REQUEST, message);
         String json = JsonUtils.json(error);
         byte[] data = json.getBytes(StandardCharsets.UTF_8);
         response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);

@@ -1,7 +1,7 @@
 package io.github.novareseller.boot.interceptor;
 
 
-import io.github.novareseller.boot.utils.IpUtils;
+import io.github.novareseller.boot.utils.HttpUtils;
 import io.github.novareseller.log.constant.LogConstants;
 import io.github.novareseller.log.handler.LogLabelBean;
 import io.github.novareseller.log.handler.LogHandler;
@@ -35,7 +35,7 @@ public class HttpLogHandler extends LogHandler {
         String spanId = request.getHeader(LogConstants.LOG_SPAN_ID_KEY);
         String preIvkApp = request.getHeader(LogConstants.PRE_IVK_APP_KEY);
         String preIvkHost = request.getHeader(LogConstants.PRE_IVK_APP_HOST);
-        String preIp = IpUtils.getRemoteHost(request);
+        String preIp = HttpUtils.getRemoteHost(request);
 
         LogLabelBean labelBean = new LogLabelBean(preIvkApp, preIvkHost, preIp, traceId, spanId);
 

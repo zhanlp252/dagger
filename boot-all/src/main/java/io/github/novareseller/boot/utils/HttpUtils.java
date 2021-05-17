@@ -12,7 +12,7 @@ import java.util.Set;
  * @author: Bowen huang
  * @date: 2021/04/28
  */
-public class IpUtils {
+public class HttpUtils {
 
     private static ImmutableList<String> ipHeaderNameList = ImmutableList.<String>builder()
             .add("x-forwarded-for")
@@ -74,6 +74,9 @@ public class IpUtils {
         return Strings.nullToEmpty(remoteHost);
     }
 
+    public static String getClientRegion(HttpServletRequest request) {
+        return Strings.nullToEmpty(request.getHeader("CF-IPCountry"));
+    }
 
     /**
      * Get client ip address from header

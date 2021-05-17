@@ -8,6 +8,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.code.kaptcha.impl.DefaultKaptcha;
 import com.google.code.kaptcha.util.Config;
 import io.github.novareseller.boot.filter.CachingRequestContentFilter;
+import io.github.novareseller.boot.interceptor.ClientAuthInterceptor;
+import io.github.novareseller.boot.interceptor.LogInterceptor;
 import io.github.novareseller.boot.interceptor.UserAuthInterceptor;
 import io.github.novareseller.boot.properties.WebProperties;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,9 +53,15 @@ public class WebMvcConfig implements WebMvcConfigurer {
          * excludePathPatterns():添加不需要拦截的路径
          * 在括号中还可以使用集合的形式，如注释部分代码所示
          */
-        registry.addInterceptor(new UserAuthInterceptor(webProperties.getExcludePathPatterns()))
+        registry.addInterceptor(new LogInterceptor())
                 .addPathPatterns("/api/**")
                 .excludePathPatterns(WebProperties.ENDPOINTS);
+
+        registry.addInterceptor(new UserAuthInterceptor(webProperties.getExcludePathPatterns()))
+                .addPathPatterns("/api/**");
+
+        registry.addInterceptor(new ClientAuthInterceptor())
+                .addPathPatterns("/api/**");
 
     }
 
@@ -80,24 +88,6 @@ public class WebMvcConfig implements WebMvcConfigurer {
         return bean;
     }
 
-
-    /*@Bean
-    @ConditionalOnBean(JwtRegisterBean.class)
-    public AuthenticateOncePerRequestFilter authenticateOncePerRequestFilter() {
-        return new AuthenticateOncePerRequestFilter(webProperties.getExcludePathPatterns());
-    }
-
-    @Bean("authenticateFilterRegistrationBean")
-    @ConditionalOnBean(AuthenticateOncePerRequestFilter.class)
-    public FilterRegistrationBean<AuthenticateOncePerRequestFilter> authenticateFilterRegistrationBean(
-            AuthenticateOncePerRequestFilter authenticateOncePerRequestFilter
-    ) {
-        FilterRegistrationBean<AuthenticateOncePerRequestFilter> bean = new FilterRegistrationBean<>();
-        bean.setFilter(authenticateOncePerRequestFilter);
-        //bean.setOrder(1);
-        bean.addUrlPatterns("/api/*");
-        return bean;
-    }*/
 
     @Bean
     @ConditionalOnProperty(value = "spring.dagger.web.enable-kaptcha", havingValue = "true")
