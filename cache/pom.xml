@@ -41,7 +41,7 @@
                     <artifactId>slf4j-simple</artifactId>
                 </exclusion>
             </exclusions>
-            <scope>provided</scope>
+            <scope>compile</scope>
         </dependency>
 
         <dependency>

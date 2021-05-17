@@ -57,7 +57,7 @@ public class UserAuthInterceptor extends AbsWebHandlerMethodInterceptor {
         String language = getLanguage(request);
 
 
-        if (!isExcludePath(uri)) {
+        if (isExcludePath(uri)) {
             log.info("http request:token hash={}, user={}", authorizationHash, "Anonymous user ignoring token");
             return true;
         }

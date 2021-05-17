@@ -44,8 +44,8 @@ public class LogInterceptor extends AbsWebHandlerMethodInterceptor {
             stopWatch.start();
         }
 
-        log.info("http request:traceId={}, method={}, uri={}, ip={}, language={}, data={}",
-                LogContext.getTraceId(), method, uri, ip, language, text);
+        log.info("http request: uri={}, method={}, ip={}, language={}, data={}",
+                uri, method, ip, language, text);
 
         return true;
     }

@@ -103,9 +103,11 @@ public class ClientAuthInterceptor extends AbsWebHandlerMethodInterceptor {
 
     @Override
     public void afterCompletionByHandlerMethod(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) throws Exception {
-        if ( request instanceof MultipleReadHttpRequestWrapper) {
-            String id = String.format("%08x", request.hashCode());
-            log.info("API completed[{}]: status={}, contentType={}", id, response.getStatus(), response.getContentType());
+        if (hasVerifyClientAnnotation((HandlerMethod)handler)) {
+            if ( request instanceof MultipleReadHttpRequestWrapper) {
+                String id = String.format("%08x", request.hashCode());
+                log.info("API completed[{}]: status={}, contentType={}", id, response.getStatus(), response.getContentType());
+            }
         }
     }
 
