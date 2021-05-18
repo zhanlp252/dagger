@@ -16,4 +16,6 @@ import java.util.List;
 public class TenantProperties {
 
     private List<String> ignoreTables;
+
+    private boolean enableTenant = true;
 }

@@ -72,25 +72,28 @@ public class DataBaseAutoConfigure {
     @Bean
     public MybatisPlusInterceptor mybatisPlusInterceptor() {
         MybatisPlusInterceptor interceptor = new MybatisPlusInterceptor();
-        interceptor.addInnerInterceptor(new TenantLineInnerInterceptor(new TenantLineHandler() {
-            @Override
-            public Expression getTenantId() {
-                long tenantId = SecurityContext.getLoginUser().getTenantId();
-                if (tenantId == 0) {
-                    return new NullValue();
-                }
-                return new LongValue(tenantId);
-            }
 
-            @Override
-            public boolean ignoreTable(String tableName) {
-                if (Validator.isNullOrEmpty(tenantProperties) ||
-                        Validator.isNullOrEmpty(tenantProperties.getIgnoreTables())) {
-                    return false;
+        if (tenantProperties.isEnableTenant()) {
+            interceptor.addInnerInterceptor(new TenantLineInnerInterceptor(new TenantLineHandler() {
+                @Override
+                public Expression getTenantId() {
+                    long tenantId = SecurityContext.getLoginUser().getTenantId();
+//                if (tenantId == 0) {
+//                    return new NullValue();
+//                }
+                    return new LongValue(tenantId);
                 }
-                return tenantProperties.getIgnoreTables().stream().anyMatch((t) -> t.equalsIgnoreCase(tableName));
-            }
-        }));
+
+                @Override
+                public boolean ignoreTable(String tableName) {
+                    if (Validator.isNullOrEmpty(tenantProperties) ||
+                            Validator.isNullOrEmpty(tenantProperties.getIgnoreTables())) {
+                        return false;
+                    }
+                    return tenantProperties.getIgnoreTables().stream().anyMatch((t) -> t.equalsIgnoreCase(tableName));
+                }
+            }));
+        }
 
         BlockAttackInnerInterceptor blockAttackInnerInterceptor = new BlockAttackInnerInterceptor();
         interceptor.addInnerInterceptor(blockAttackInnerInterceptor);
@@ -99,6 +102,8 @@ public class DataBaseAutoConfigure {
 
         return interceptor;
     }
+
+
 
     @Bean
     public ConfigurationCustomizer configurationCustomizer() {

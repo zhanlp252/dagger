@@ -97,6 +97,7 @@ public class UserAuthInterceptor extends AbsWebHandlerMethodInterceptor {
             LoginUser loginUser = LoginUser.claims2LoginUser(claims);
             loginUser.setClientIp(ip);
             loginUser.setLanguage(language);
+            loginUser.setToken(authorization);
             //set context data
             SecurityContext.setLoginUser(loginUser);
         } catch (ExpiredJwtException ex) {
