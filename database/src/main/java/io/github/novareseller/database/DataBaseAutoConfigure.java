@@ -37,6 +37,7 @@ import javax.sql.DataSource;
  */
 @EnableTransactionManagement
 @Configuration
+@ConditionalOnProperty(value = "spring.datasource.url")
 @AutoConfigureBefore(value={DruidDataSourceAutoConfigure.class, MybatisPlusAutoConfiguration.class})
 @MapperScan(value = {"com.valor.panel.*.dao", "io.github.novareseller.*.dao", "xyz.novareseller.*.dao"})
 @EnableConfigurationProperties({TenantProperties.class})

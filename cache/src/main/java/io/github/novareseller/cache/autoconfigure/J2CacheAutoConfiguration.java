@@ -8,6 +8,7 @@ import net.oschina.j2cache.J2Cache;
 import net.oschina.j2cache.J2CacheBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -27,6 +28,7 @@ import java.io.IOException;
 @EnableConfigurationProperties({J2CacheProperties.class})
 @Configuration
 @PropertySource(value = "${spring.dagger.cache.config-location}", encoding = "UTF-8", ignoreResourceNotFound = true)
+@ConditionalOnProperty(value = "spring.dagger.cache.open-spring-cache", havingValue = "true")
 public class J2CacheAutoConfiguration {
 
     @Autowired
